@@ -47,6 +47,11 @@ function App() {
         category={dadosIniciais.categorias[5]}
       />
 
+      <Carousel 
+        style={{ background: `${dadosIniciais.categorias[6].cor}` }}
+        category={dadosIniciais.categorias[6]}
+      />
+
       <Footer
       />
     </div>
