@@ -37,21 +37,33 @@ export const SliderItem = styled.li`
   }
 `;
 
+function NextArrow(props) {
+  return (
+    <div 
+      className={props.className}
+      onClick={props.onClick}
+      style={{...props.style, backgroundColor: props.color}}
+    />
+  )
+}
 
-const Slider = ({ children }) => (
-  <Container>
-    <SlickSlider {...{
-      dots: false,
-      infinite: false,
-      speed: 300,
-      centerMode: false,
-      variableWidth: true,
-      adaptiveHeight: true,
-    }}
-    >
-      {children}
-    </SlickSlider>
-  </Container>
-);
+const Slider = function({ children, colorArrow }) {
+  return (
+    <Container>
+      <SlickSlider {...{
+        dots: false,
+        infinite: true,
+        speed: 300,
+        centerMode: false,
+        variableWidth: true,
+        adaptiveHeight: true,
+        nextArrow: <NextArrow color={colorArrow}/>
+      }}
+      >
+        {children}
+      </SlickSlider>
+    </Container>
+  );
+}
 
 export default Slider; 
