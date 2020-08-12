@@ -17,27 +17,33 @@ function App() {
       />
 
       <Carousel 
+        style={{ background: `${dadosIniciais.categorias[0].cor}` }}
         ignoreFirstVideo
         category={dadosIniciais.categorias[0]}
       />
 
       <Carousel 
+        style={{ background: `${dadosIniciais.categorias[1].cor}` }}
         category={dadosIniciais.categorias[1]}
       />
 
       <Carousel 
+        style={{ background: `${dadosIniciais.categorias[2].cor}` }}
         category={dadosIniciais.categorias[2]}
       />
 
       <Carousel 
+        style={{ background: `${dadosIniciais.categorias[3].cor}` }}
         category={dadosIniciais.categorias[3]}
       />
 
       <Carousel 
+        style={{ background: `${dadosIniciais.categorias[4].cor}` }}
         category={dadosIniciais.categorias[4]}
       />
 
       <Carousel 
+        style={{ background: `${dadosIniciais.categorias[5].cor}` }}
         category={dadosIniciais.categorias[5]}
       />
 
