@@ -46,7 +46,7 @@ function CadastroVideo() {
         />
 
         <FormField
-          type="text" 
+          type="textarea" 
           name="descricao"
           value={categoria.descricao}
           onChange={handleChange}
