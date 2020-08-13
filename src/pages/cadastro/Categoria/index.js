@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import PageDefault from '../../../components/PageDefault';
 import FormField from '../../../components/FormField';
+import Button from '../../../components/Button';
 
 function CadastroVideo() {
   const catInicial = { 
@@ -61,25 +62,29 @@ function CadastroVideo() {
           label="Cor"
         />
 
-        <button>
-          Cadastrar
-        </button>
+        <div style={{ textAlign: 'right' }}>
+          <Button>
+            Cadastrar
+          </Button>
+        </div>
       </form>
 
       <ul>
-        {categorias.map((categoria, index) => {
+        {/*categorias.map((categoria, index) => {
           //console.log(categoria);
           return (            
             <li key={`${categoria.nome}${index}`}>
               {categoria.nome || 'Sem Nome'}
             </li>    
           )
-        })}
+        })*/}
       </ul>
 
+      <div style={ {textAlign: 'center'} }>
       <Link to="/">
         Ir para Home
       </Link>
+      </div>
     </PageDefault>
   );
 }

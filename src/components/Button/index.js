@@ -14,9 +14,14 @@ const Button = styled.a`
   text-decoration: none;
   display: inline-block;
   transition: opacity .3s;
+  text-align: center;
   &:hover,
   &:focus {
     opacity: .5;
+  }
+
+  @media(max-width: 600px) {
+    width: 100%;
   }
 `;
 
