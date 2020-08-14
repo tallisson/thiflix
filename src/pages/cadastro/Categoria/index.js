@@ -27,7 +27,10 @@ function CadastroCategoria() {
   }
 
   useEffect(() => {
-    const URL = 'https://dev-thiflix.herokuapp.com/categorias';
+    const URL = window.location.hostname.includes('localhost') ? 
+      'http://localhost:8080/categorias' :
+      'https://dev-thiflix.herokuapp.com/categorias';
+
     fetch(URL)
     .then(async (response) => {
       const data = await response.json();
