@@ -4,26 +4,48 @@ import { Link } from 'react-router-dom';
 import PageDefault from '../../../components/PageDefault';
 import FormField from '../../../components/FormField';
 import Button from '../../../components/Button';
+import useForm from '../../../hooks/useForm';
 
 function CadastroCategoria() {
   const catInicial = { 
-    nome: '',
+    titulo: '',
     descricao: '',
     cor: '#000000'
   }
-  const [categorias, setCategorias] = useState(['Teste']);
-  const [categoria, setCategoria] = useState(catInicial);
 
-  function setValue(key, value) {
-    setCategoria({
-      ...categoria,
-      [key]: value
+  const { categoria, handleChange, clearForm } = useForm(catInicial);
+  const [categorias, setCategorias] = useState([]);  
+
+  function saveCategoria() {
+    const URL = window.location.hostname.includes('localhost') ? 
+      'http://localhost:8080/categorias' :
+      'https://dev-thiflix.herokuapp.com/categorias';
+    console.log(JSON.stringify(categoria));
+    fetch(URL, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(categoria)
+    })
+    .then(async (response) => {
+      if(response.ok) {
+        await console.log(response);
+        return;
+      }
+      throw new Error('Não foi inserir os dados');
     });
   }
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setValue(name, value);
+  function handleSubmit(e) {
+    e.preventDefault();
+    setCategorias([
+      ...categorias,
+      categoria
+    ]);
+
+    saveCategoria();
+    clearForm();
   }
 
   useEffect(() => {
@@ -33,10 +55,12 @@ function CadastroCategoria() {
 
     fetch(URL)
     .then(async (response) => {
-      const data = await response.json();
-      setCategorias([
-        ...data,
-      ])
+      if(response.ok) {
+        const data = await response.json();
+        setCategorias(data);
+        return;
+      }
+      throw new Error('Não foi possível pegar os dados');
     })
   }, [
     categoria.nome
@@ -44,22 +68,15 @@ function CadastroCategoria() {
 
   return (
     <PageDefault>
-      <h1>Cadastro de Categoria: {categoria.nome.trim()}</h1>
+      <h1>Cadastro de Categoria: {categoria.titulo.trim()}</h1>
 
-      <form onSubmit={function handleSubmit(e) {
-        e.preventDefault();
-        setCategorias([
-          ...categorias,
-          categoria
-        ]);
-        setCategoria(catInicial)
-      }}>
+      <form>
         <FormField
-          type="text" 
-          name="nome"
-          value={categoria.nome}
+          type="input" 
+          name="titulo"
+          value={categoria.titulo}
           onChange={handleChange}
-          label="Nome da Categoria"
+          label="Título da Categoria"
         />
 
         <FormField
@@ -79,7 +96,9 @@ function CadastroCategoria() {
         />
 
         <div style={{ textAlign: 'right' }}>
-          <Button>
+          <Button onClick={(e) => {
+            handleSubmit(e);
+          }}>
             Cadastrar
           </Button>
         </div>
@@ -93,10 +112,9 @@ function CadastroCategoria() {
 
       <ul>
         {categorias.map((categoria, index) => {
-          //console.log(categoria);
-          return (            
-            <li key={`${categoria.nome}${index}`}>
-              {categoria.nome || 'Sem Nome'}
+          return (
+            <li key={`${categoria.titulo}${index}`}>
+              {categoria.titulo}
             </li>    
           )
         })}
