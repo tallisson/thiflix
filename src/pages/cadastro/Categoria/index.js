@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import PageDefault from '../../../components/PageDefault';
 import FormField from '../../../components/FormField';
 import Button from '../../../components/Button';
 
-function CadastroVideo() {
+function CadastroCategoria() {
   const catInicial = { 
     nome: '',
     descricao: '',
@@ -26,9 +26,22 @@ function CadastroVideo() {
     setValue(name, value);
   }
 
+  useEffect(() => {
+    const URL = 'http://localhost:3004/categorias';
+    fetch(URL)
+    .then(async (response) => {
+      const data = await response.json();
+      setCategorias([
+        ...data,
+      ])
+    })
+  }, [
+    categoria.nome
+  ]);
+
   return (
     <PageDefault>
-      <h1>Cadastro de Categoria: {categoria.nome}!</h1>
+      <h1>Cadastro de Categoria: {categoria.nome.trim()}</h1>
 
       <form onSubmit={function handleSubmit(e) {
         e.preventDefault();
@@ -68,16 +81,22 @@ function CadastroVideo() {
           </Button>
         </div>
       </form>
+      
+      {categorias.length === 0 && (
+        <div>
+          Loading...
+        </div>
+      )}
 
       <ul>
-        {/*categorias.map((categoria, index) => {
+        {categorias.map((categoria, index) => {
           //console.log(categoria);
           return (            
             <li key={`${categoria.nome}${index}`}>
               {categoria.nome || 'Sem Nome'}
             </li>    
           )
-        })*/}
+        })}
       </ul>
 
       <div style={ {textAlign: 'center'} }>
@@ -89,4 +108,4 @@ function CadastroVideo() {
   );
 }
 
-export default CadastroVideo;
+export default CadastroCategoria;
