@@ -5,6 +5,7 @@ import PageDefault from '../../../components/PageDefault';
 import FormField from '../../../components/FormField';
 import Button from '../../../components/Button';
 import useForm from '../../../hooks/useForm';
+import config from '../../../config';
 
 function CadastroCategoria() {
   const catInicial = { 
@@ -16,11 +17,31 @@ function CadastroCategoria() {
   const { categoria, handleChange, clearForm } = useForm(catInicial);
   const [categorias, setCategorias] = useState([]);  
 
+  function validaCategoria() {
+    const response = {
+      ok: true,
+      msg: []
+    };
+    if(!(categoria.titulo !== undefined && categoria.titulo.length > 0)) {
+      response.ok = false;
+      response.msg.push('Cadastrar título');
+    }
+    if(!(categoria.descricao !== undefined && categoria.descricao.length > 0)) {
+      response.ok = false;
+      response.msg.push('Cadastrar descrição');
+    }
+    if(!(categoria.cor !== undefined && categoria.cor.length > 0 && categoria.cor.indexOf('#') !== -1)) {
+      response.ok = false;
+      response.msg.push('Cadastrar cor');
+    }
+    return response;
+  }
+
   function saveCategoria() {
     const URL = window.location.hostname.includes('localhost') ? 
       'http://localhost:8080/categorias' :
       'https://dev-thiflix.herokuapp.com/categorias';
-    console.log(JSON.stringify(categoria));
+
     fetch(URL, {
       method: 'POST',
       headers: {
@@ -43,15 +64,12 @@ function CadastroCategoria() {
       ...categorias,
       categoria
     ]);
-
     saveCategoria();
     clearForm();
   }
 
   useEffect(() => {
-    const URL = window.location.hostname.includes('localhost') ? 
-      'http://localhost:8080/categorias' :
-      'https://dev-thiflix.herokuapp.com/categorias';
+    const URL = `${config.URL_BASE}/categorias`;
 
     fetch(URL)
     .then(async (response) => {
@@ -97,7 +115,11 @@ function CadastroCategoria() {
 
         <div style={{ textAlign: 'right' }}>
           <Button onClick={(e) => {
-            handleSubmit(e);
+            const response = validaCategoria();
+            if(response.ok === true) {           
+              handleSubmit(e);
+              return;
+            }
           }}>
             Cadastrar
           </Button>
@@ -112,11 +134,18 @@ function CadastroCategoria() {
 
       <ul>
         {categorias.map((categoria, index) => {
-          return (
-            <li key={`${categoria.titulo}${index}`}>
-              {categoria.titulo}
-            </li>    
-          )
+          if(categoria.titulo !== undefined && categoria.titulo.length > 0) {
+            return (
+              <li key={`${categoria.titulo}${index}`}>
+                {categoria.titulo}
+              </li>    
+            );
+          } else {
+            return (
+              <>
+              </>
+            );
+          }
         })}
       </ul>
 
