@@ -14,7 +14,7 @@ function CadastroCategoria() {
     cor: '#000000'
   }
 
-  const { categoria, handleChange, clearForm } = useForm(catInicial);
+  const { data, handleChange, clearForm } = useForm(catInicial);
   const [categorias, setCategorias] = useState([]);  
 
   function validaCategoria() {
@@ -22,15 +22,15 @@ function CadastroCategoria() {
       ok: true,
       msg: []
     };
-    if(!(categoria.titulo !== undefined && categoria.titulo.length > 0)) {
+    if(!(data.titulo !== undefined && data.titulo.length > 0)) {
       response.ok = false;
       response.msg.push('Cadastrar título');
     }
-    if(!(categoria.descricao !== undefined && categoria.descricao.length > 0)) {
+    if(!(data.descricao !== undefined && data.descricao.length > 0)) {
       response.ok = false;
       response.msg.push('Cadastrar descrição');
     }
-    if(!(categoria.cor !== undefined && categoria.cor.length > 0 && categoria.cor.indexOf('#') !== -1)) {
+    if(!(data.cor !== undefined && data.cor.length > 0 && data.cor.indexOf('#') !== -1)) {
       response.ok = false;
       response.msg.push('Cadastrar cor');
     }
@@ -47,7 +47,7 @@ function CadastroCategoria() {
       headers: {
         'Content-type': 'application/json'
       },
-      body: JSON.stringify(categoria)
+      body: JSON.stringify(data)
     })
     .then(async (response) => {
       if(response.ok) {
@@ -62,7 +62,7 @@ function CadastroCategoria() {
     e.preventDefault();
     setCategorias([
       ...categorias,
-      categoria
+      data
     ]);
     saveCategoria();
     clearForm();
@@ -74,25 +74,25 @@ function CadastroCategoria() {
     fetch(URL)
     .then(async (response) => {
       if(response.ok) {
-        const data = await response.json();
-        setCategorias(data);
+        const dataResponse = await response.json();
+        setCategorias(dataResponse);
         return;
       }
       throw new Error('Não foi possível pegar os dados');
     })
   }, [
-    categoria.nome
+    data.nome
   ]);
 
   return (
     <PageDefault>
-      <h1>Cadastro de Categoria: {categoria.titulo.trim()}</h1>
+      <h1>Cadastro de data: {data.titulo.trim()}</h1>
 
       <form>
         <FormField
           type="input" 
           name="titulo"
-          value={categoria.titulo}
+          value={data.titulo}
           onChange={handleChange}
           label="Título da Categoria"
         />
@@ -100,14 +100,14 @@ function CadastroCategoria() {
         <FormField
           type="textarea" 
           name="descricao"
-          value={categoria.descricao}
+          value={data.descricao}
           onChange={handleChange}
           label="Descrição"
         />
 
         <FormField
           type="color"
-          value={categoria.cor}
+          value={data.cor}
           name="cor"
           onChange={handleChange}
           label="Cor"
@@ -133,11 +133,11 @@ function CadastroCategoria() {
       )}
 
       <ul>
-        {categorias.map((categoria, index) => {
-          if(categoria.titulo !== undefined && categoria.titulo.length > 0) {
+        {categorias.map((data, index) => {
+          if(data.titulo !== undefined && data.titulo.length > 0) {
             return (
-              <li key={`${categoria.titulo}${index}`}>
-                {categoria.titulo}
+              <li key={`${data.titulo}${index}`}>
+                {data.titulo}
               </li>    
             );
           } else {
@@ -150,9 +150,9 @@ function CadastroCategoria() {
       </ul>
 
       <div style={ {textAlign: 'center'} }>
-      <Link to="/">
-        Ir para Home
-      </Link>
+        <Link to="/">
+          Ir para Home
+        </Link>
       </div>
     </PageDefault>
   );

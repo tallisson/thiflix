@@ -186,6 +186,13 @@
       "categoriaId": 5,
       "titulo": "Resident Evil 8",
       "url": "https://www.youtube.com/watch?v=JSapXD9vxYA"
+    },
+    {
+      "titulo": "Validação em React",
+      "url": "https://youtu.be/-nYNd6EuZHU",
+      "categoria": "Front End",
+      "categoriaId": 1,
+      "id": 25
     }
   ]
 }

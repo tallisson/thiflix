@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
-function useForm(catInicial) {
-  const [categoria, setCategoria] = useState(catInicial);
+function useForm(valorInicial) {
+  const [data, setData] = useState(valorInicial);
 
   function setValue(key, value) {
-    setCategoria({
-      ...categoria,
+    setData({
+      ...data,
       [key]: value
     });
   }
@@ -16,11 +16,11 @@ function useForm(catInicial) {
   }
 
   function clearForm() {
-    setCategoria(catInicial);
+    setData(valorInicial);
   }
 
   return {
-    categoria,
+    data,
     handleChange,
     clearForm
   }
